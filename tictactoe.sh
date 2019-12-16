@@ -46,7 +46,31 @@ function getUserSymbol() {
 	echo "You are assigned: " $user
 }
 
-getDefaultCellValue
-getUserSymbol
-getTossResult
-getBoardDisplayed
+function isValidCell() {
+	case ${cellValue[$1]} in
+		- )
+			cellValid=1;;
+		* )
+			cellValid=0;;
+	esac
+	echo $cellValid
+}
+
+function main() {
+	getDefaultCellValue
+	getUserSymbol
+	getTossResult
+	getBoardDisplayed
+	read -p "Enter the cell number between 1-9: " cellNumber
+	validCell=$( isValidCell $cellNumber )
+	if [ $validCell -eq 1 ]
+	then
+		cellValue[$cellNumber]=$user
+		getBoardDisplayed
+		counter=$(( $counter+1 ))
+	else
+		echo "Enter valid cell number"
+	fi
+}
+
+main
