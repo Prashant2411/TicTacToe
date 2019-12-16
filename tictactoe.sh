@@ -11,4 +11,16 @@ function getDefaultCellValue() {
 	done
 }
 
+function getUserSymbol() {
+	userSymbol=$(( RANDOM % 2 ))
+	case $userSymbol in
+		1 )
+			user=X;;
+		0 )
+			user=O;;
+	esac
+	echo "You are assigned: " $user
+}
+
 getDefaultCellValue
+getUserSymbol
