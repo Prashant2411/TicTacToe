@@ -14,15 +14,9 @@ function getDefaultCellValue() {
 }
 
 function getBoardDisplayed() {
-	echo "     |     |     "
-	echo "  ${cellValue[1]}  |  ${cellValue[2]}  |  ${cellValue[3]}  "
-	echo "_____|_____|_____"
-	echo "     |     |     "
-	echo "  ${cellValue[4]}  |  ${cellValue[5]}  |  ${cellValue[6]}  "
-	echo "_____|_____|_____"
-	echo "     |     |     "
-	echo "  ${cellValue[7]}  |  ${cellValue[8]}  |  ${cellValue[9]}  "
-	echo "     |     |     "
+	echo -e "     |     |     \n  ${cellValue[1]}  |  ${cellValue[2]}  |  ${cellValue[3]} \n_____|_____|_____"
+	echo -e "     |     |     \n  ${cellValue[4]}  |  ${cellValue[5]}  |  ${cellValue[6]} \n_____|_____|_____"
+	echo -e "     |     |     \n  ${cellValue[7]}  |  ${cellValue[8]}  |  ${cellValue[9]} \n     |     |     "
 }
 
 function getTossResult() {
