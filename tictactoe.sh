@@ -2,6 +2,8 @@
 
 echo "Welcome to TicTacToe"
 
+user=-
+
 declare -a cellValue
 
 function getDefaultCellValue() {
@@ -10,6 +12,16 @@ function getDefaultCellValue() {
 		cellValue[$i]=-
 	done
 }
+
+function getTossResult() {
+	case $user in 
+		X )
+			echo "You will play first";;
+		O )
+			echo "Computer will play first";;
+	esac
+}
+
 
 function getUserSymbol() {
 	userSymbol=$(( RANDOM % 2 ))
@@ -24,3 +36,4 @@ function getUserSymbol() {
 
 getDefaultCellValue
 getUserSymbol
+getTossResult
