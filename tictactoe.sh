@@ -13,6 +13,18 @@ function getDefaultCellValue() {
 	done
 }
 
+function getBoardDisplayed() {
+	echo "     |     |     "
+	echo "  ${cellValue[1]}  |  ${cellValue[2]}  |  ${cellValue[3]}  "
+	echo "_____|_____|_____"
+	echo "     |     |     "
+	echo "  ${cellValue[4]}  |  ${cellValue[5]}  |  ${cellValue[6]}  "
+	echo "_____|_____|_____"
+	echo "     |     |     "
+	echo "  ${cellValue[7]}  |  ${cellValue[8]}  |  ${cellValue[9]}  "
+	echo "     |     |     "
+}
+
 function getTossResult() {
 	case $user in 
 		X )
@@ -37,3 +49,4 @@ function getUserSymbol() {
 getDefaultCellValue
 getUserSymbol
 getTossResult
+getBoardDisplayed
