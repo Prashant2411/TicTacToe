@@ -2,6 +2,8 @@
 
 echo "Welcome to TicTacToe"
 
+cellNumber=0
+flag=0
 winStatusRow=0
 winStatusCol=0
 winStatusDiag=0
@@ -18,7 +20,7 @@ function getDefaultCellValue() {
 function getBoardDisplayed() {
 	echo -e "     |     |     \n  ${cellValue[1]}  |  ${cellValue[2]}  |  ${cellValue[3]} \n_____|_____|_____"
 	echo -e "     |     |     \n  ${cellValue[4]}  |  ${cellValue[5]}  |  ${cellValue[6]} \n_____|_____|_____"
-	echo -e "     |     |     \n  ${cellValue[7]}  |  ${cellValue[8]}  |  ${cellValue[9]} \n     |     |     "
+	echo -e "     |     |     \n  ${cellValue[7]}  |  ${cellValue[8]}  |  ${cellValue[9]} \n     |     |     \n"
 }
 
 function getTossResult() {
@@ -35,9 +37,13 @@ function getUserSymbol() {
 	userSymbol=$(( RANDOM % 2 ))
 	case $userSymbol in
 		1 )
-			user=X;;
+			comp=O
+			user=X
+			flag=0;;
 		0 )
-			user=O;;
+			comp=X
+			user=O
+			flag=1;;
 	esac
 	echo "You are assigned: " $user
 }
@@ -51,6 +57,7 @@ function isValidCell() {
 	esac
 	echo $cellValid
 }
+
 
 function getRowCheck () {
 	for (( i=1;i<10;i=$(( $i+3 )) ))
@@ -86,30 +93,58 @@ function getDiagonalCheck () {
 	fi
 }
 
+function getComputerInput () {
+	cellNumber=$(( RANDOM % 9 + 1 ))
+	validCell=$( isValidCell $cellNumber )
+	if [[ $validCell -eq 1 ]]
+	then
+		cellValue[$cellNumber]=$comp
+	else
+		getComputerInput
+	fi
+}
+
+function getWinner () {
+	cellNumber=$1
+	winStatusRow=$( getRowCheck )
+	winStatusCol=$( getColumnCheck )
+	winStatusDiag=$( getDiagonalCheck )
+	if [[ $winStatusRow -eq 1 || $winStatusCol -eq 1 || $winStatusDiag -eq 1 ]]
+	then
+		echo "${cellValue[$cellNumber]} is winner"
+		exit
+	fi
+}
+
 function main() {
 	getDefaultCellValue
 	getUserSymbol
 	getTossResult
 	getBoardDisplayed
-	while true
+	for (( i=1;i<10;i++ ))
 	do
-		read -p "Enter the cell number between 1-9: " cellNumber
-		validCell=$( isValidCell $cellNumber )
-		if [ $validCell -eq 1 ]
+		if [ $flag -eq 0 ]
 		then
-			cellValue[$cellNumber]=$user
-			getBoardDisplayed
-			counter=$(( $counter+1 ))
-			winStatusRow=$( getRowCheck )
-			winStatusCol=$( getColumnCheck )
-			winStatusDiag=$( getDiagonalCheck )
-			if [[ $winStatusRow -eq 1 || $winStatusCol -eq 1 || $winStatusDiag -eq 1 ]]
+			read -p "Enter the cell number between 1-9: " cellNumber
+			validCell=$( isValidCell $cellNumber )
+			if [ $validCell -eq 1 ]
 			then
-				echo "${cellValue[$cellNumber]} is winner"
-				break
+				cellValue[$cellNumber]=$user
+				counter=$(( $counter+1 ))
+				getBoardDisplayed
+				getWinner $cellNumber
+				flag=1
+			else
+				echo "Enter valid cell number"
+				((i--))
 			fi
-		else
-			echo "Enter valid cell number"
+		fi
+		if [ $flag -eq 1 ]
+		then
+			getComputerInput
+			getBoardDisplayed
+			getWinner $cellNumber
+			flag=0
 		fi
 	done
 }
