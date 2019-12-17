@@ -101,6 +101,7 @@ function getWinRowChecked () {
 		if [[ ${cellValue[$i]} == ${cellValue[(($i+1))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+2))]} == " " ]]
 		then
 			cellValue[(($i+2))]=$comp
+
 			cellNumber=$(( $i+2 ))
 			winStatus=1
 		elif [[ ${cellValue[$i]} == ${cellValue[(($i+2))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+1))]} == " " ]]
@@ -272,7 +273,7 @@ function main() {
 	getUserSymbol
 	getTossResult
 	getBoardDisplayed
-	for (( j=1;j<10;j++ ))
+	for (( j=1;j<6;j++ ))
 	do
 		if [ $flag -eq 0 ]
 		then
@@ -288,7 +289,7 @@ function main() {
 				flag=1
 			else
 				echo "Enter valid cell number"
-				((i--))
+				((j--))
 			fi
 		fi
 		if [ $flag -eq 1 ]
@@ -305,6 +306,10 @@ function main() {
 			flag=0
 		fi
 	done
+	if [ $j == 6 ]
+	then
+		echo "Match Tied"
+	fi
 }
 
 main
