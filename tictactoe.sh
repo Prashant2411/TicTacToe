@@ -181,6 +181,28 @@ function getWinDiagonalChecked () {
 	fi
 }
 
+function getEmptyCorner () {
+	if [ $winStatus -eq 0 ]
+	then
+		valid=0
+		while [ $valid == 0 ]
+		do
+			corner=$(( RANDOM%4+1 ))
+			case $corner in
+				1 )	cellNumber=1;;
+				2 )	cellNumber=3;;
+				3 )	cellNumber=7;;
+				4 )	cellNumber=9;;
+			esac
+			valid=$( isValidCell $cellNumber )
+			if [ $valid -eq 1 ]
+			then
+				cellValue[$cellNumber]=$comp
+			fi
+		done
+	fi
+}
+
 function getComputerInput () {
 	if [ $winStatus -eq 0 ]
 	then
@@ -237,7 +259,7 @@ function main() {
 			getWinRowChecked
 			getWinColumnChecked
 			getWinDiagonalChecked
-			getComputerInput
+			getEmptyCorner
 			getBoardDisplayed
 			getWinner $cellNumber
 			flag=0
