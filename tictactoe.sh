@@ -4,6 +4,7 @@ echo "Welcome to TicTacToe"
 
 cellNumber=0
 flag=0
+winStatus=0
 winStatusRow=0
 winStatusCol=0
 winStatusDiag=0
@@ -157,7 +158,7 @@ function getWinDiagonalChecked () {
 				cellValue[(($i+4))]=$comp
 				cellNumber=$(( $i+4 ))
 				winStatus=1
-			elif [[ ${cellValue[(($i+8))]} == ${cellValue[(($i+4))]} && ${cellValue[$i]} == " " && ${cellValue[$i]} != " " ]]
+			elif [[ ${cellValue[(($i+8))]} == ${cellValue[(($i+4))]} && ${cellValue[$i]} == " " && ${cellValue[(($i+8))]} != " " ]]
 			then
 				cellValue[$i]=$comp
 				cellNumber=$i
@@ -167,12 +168,12 @@ function getWinDiagonalChecked () {
 				cellValue[(($i+6))]=$comp
 				cellNumber=$(( $i+6 ))
 				winStatus=1
-			elif [[ ${cellValue[(($i+2))]} == ${cellValue[(($i+6))]} && ${cellValue[(($i+4))]} == " " && ${cellValue[$i]} != " " ]]
+			elif [[ ${cellValue[(($i+2))]} == ${cellValue[(($i+6))]} && ${cellValue[(($i+4))]} == " " && ${cellValue[(($i+2))]} != " " ]]
 			then
 				cellValue[(($i+4))]=$comp
 				cellNumber=$(( $i+4 ))
 				winStatus=1
-			elif [[ ${cellValue[(($i+4))]} == ${cellValue[(($i+6))]} && ${cellValue[(($i+2))]} == " " && ${cellValue[$i]} != " " ]]
+			elif [[ ${cellValue[(($i+4))]} == ${cellValue[(($i+6))]} && ${cellValue[(($i+2))]} == " " && ${cellValue[(($i+4))]} != " " ]]
 			then
 				cellValue[(($i+2))]=$comp
 				cellNumber=$(( $i+2 ))
@@ -185,6 +186,7 @@ function getEmptyCorner () {
 	if [ $winStatus -eq 0 ]
 	then
 		counter=0
+		compInputStatus=0
 		while [ $counter -lt 4 ]
 		do
 			corner=$(( RANDOM%4+1 ))
@@ -199,12 +201,21 @@ function getEmptyCorner () {
 			if [ $valid -eq 1 ]
 			then
 				cellValue[$cellNumber]=$comp
+				compInputStatus=1
 				break
 			fi
 		done
 	fi
 }
 
+function getEmptyCenter () {
+	valid=$( isValidCell 5 )
+	if [[ $valid -eq 1 && $compInputStatus -eq 0 ]]
+	then
+		cellValue[5]=$comp
+		compInputStatus=1
+	fi
+}
 
 function getComputerInput () {
 	if [ $winStatus -eq 0 ]
@@ -263,6 +274,7 @@ function main() {
 			getWinColumnChecked
 			getWinDiagonalChecked
 			getEmptyCorner
+			getEmptyCenter
 			getBoardDisplayed
 			getWinner $cellNumber
 			flag=0
