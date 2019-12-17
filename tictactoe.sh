@@ -93,14 +93,105 @@ function getDiagonalCheck () {
 	fi
 }
 
-function getComputerInput () {
-	cellNumber=$(( RANDOM % 9 + 1 ))
-	validCell=$( isValidCell $cellNumber )
-	if [[ $validCell -eq 1 ]]
+function getWinRowChecked () {
+	winStatus=0
+	for (( i=1;i<10;i=$(( $i + 3 )) ))
+	do
+		if [[ ${cellValue[$i]} == ${cellValue[(($i+1))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+2))]} == " " ]]
+		then
+			cellValue[(($i+2))]=$comp
+			cellNumber=$(( $i+2 ))
+			winStatus=1
+		elif [[ ${cellValue[$i]} == ${cellValue[(($i+2))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+1))]} == " " ]]
+		then
+			cellValue[(($i+1))]=$comp
+			cellNumber=$(( $i+1 ))
+			winStatus=1
+		elif [[ ${cellValue[(($i+1))]} == ${cellValue[(($i+2))]} && ${cellValue[(($i+1))]} != " " && ${cellValue[$i]} == " " ]]
+		then
+			cellValue[$i]=$comp
+			cellNumber=$i
+			winStatus=1
+		fi
+	done
+}
+
+function getWinColumnChecked () {
+	echo "$winStatus"
+	if [ $winStatus -eq 0 ]
 	then
-		cellValue[$cellNumber]=$comp
-	else
-		getComputerInput
+		for (( i=1;i<4;i++ ))
+		do
+			if [[ ${cellValue[$i]} == ${cellValue[(($i+3))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+6))]} == " " ]]
+			then
+				cellValue[(($i+6))]=$comp
+				cellNumber=$(( $i+6 ))
+				winStatus=1
+			elif [[ ${cellValue[$i]} == ${cellValue[(($i+6))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+3))]} == " " ]]
+			then
+				cellValue[(($i+3))]=$comp
+				cellNumber=$(( $i+3 ))
+				winStatus=1
+			elif [[ ${cellValue[(($i+3))]} == ${cellValue[(($i+6))]} && ${cellValue[(($i+3))]} != " " && ${cellValue[$i]} == " " ]]
+			then
+				cellValue[$i]=$comp
+				cellNumber=$i
+				winStatus=1
+			fi
+		done
+	fi
+}
+
+function getWinDiagonalChecked () {
+	echo "$winStatus"
+	if [ $winStatus -eq 0 ]
+	then
+			i=1
+			if [[ ${cellValue[$i]} == ${cellValue[(($i+4))]} && ${cellValue[(($i+8))]} == " " && ${cellValue[$i]} != " " ]]
+			then
+				cellValue[(($i+8))]=$comp
+				cellNumber=$(( $i+8 ))
+				winStatus=1
+			elif [[ ${cellValue[$i]} == ${cellValue[(($i+8))]} && ${cellValue[(($i+4))]} == " " && ${cellValue[$i]} != " " ]]
+			then
+				cellValue[(($i+4))]=$comp
+				cellNumber=$(( $i+4 ))
+				winStatus=1
+			elif [[ ${cellValue[(($i+8))]} == ${cellValue[(($i+4))]} && ${cellValue[$i]} == " " && ${cellValue[$i]} != " " ]]
+			then
+				cellValue[$i]=$comp
+				cellNumber=$i
+				winStatus=1
+			elif [[ ${cellValue[(($i+2))]} == ${cellValue[(($i+4))]} && ${cellValue[(($i+6))]} == " " && ${cellValue[(($i+2))]} != " " ]]
+			then
+				cellValue[(($i+6))]=$comp
+				cellNumber=$(( $i+6 ))
+				winStatus=1
+			elif [[ ${cellValue[(($i+2))]} == ${cellValue[(($i+6))]} && ${cellValue[(($i+4))]} == " " && ${cellValue[$i]} != " " ]]
+			then
+				cellValue[(($i+4))]=$comp
+				cellNumber=$(( $i+4 ))
+				winStatus=1
+			elif [[ ${cellValue[(($i+4))]} == ${cellValue[(($i+6))]} && ${cellValue[(($i+2))]} == " " && ${cellValue[$i]} != " " ]]
+			then
+				cellValue[(($i+2))]=$comp
+				cellNumber=$(( $i+2 ))
+				winStatus=1
+			fi
+	fi
+}
+
+function getComputerInput () {
+	if [ $winStatus -eq 0 ]
+	then
+		cellNumber=$(( RANDOM % 9 + 1 ))
+		validCell=$( isValidCell $cellNumber )
+		if [[ $validCell -eq 1 ]]
+		then
+			cellValue[$cellNumber]=$comp
+		else
+			getComputerInput
+		fi
 	fi
 }
 
@@ -121,7 +212,7 @@ function main() {
 	getUserSymbol
 	getTossResult
 	getBoardDisplayed
-	for (( i=1;i<10;i++ ))
+	for (( j=1;j<10;j++ ))
 	do
 		if [ $flag -eq 0 ]
 		then
@@ -129,6 +220,7 @@ function main() {
 			validCell=$( isValidCell $cellNumber )
 			if [ $validCell -eq 1 ]
 			then
+				echo "User's Turn "
 				cellValue[$cellNumber]=$user
 				counter=$(( $counter+1 ))
 				getBoardDisplayed
@@ -141,6 +233,10 @@ function main() {
 		fi
 		if [ $flag -eq 1 ]
 		then
+			echo "Computer's Turn "
+			getWinRowChecked
+			getWinColumnChecked
+			getWinDiagonalChecked
 			getComputerInput
 			getBoardDisplayed
 			getWinner $cellNumber
