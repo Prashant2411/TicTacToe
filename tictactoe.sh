@@ -242,20 +242,6 @@ function getEmptySides () {
 	fi
 }
 
-function getComputerInput () {
-	if [ $winStatus -eq 0 ]
-	then
-		cellNumber=$(( RANDOM % 9 + 1 ))
-		validCell=$( isValidCell $cellNumber )
-		if [[ $validCell -eq 1 ]]
-		then
-			cellValue[$cellNumber]=$comp
-		else
-			getComputerInput
-		fi
-	fi
-}
-
 function getWinner () {
 	cellNumber=$1
 	winStatusRow=$( getRowCheck )
