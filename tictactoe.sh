@@ -74,13 +74,7 @@ function getColumnCheck () {
 
 function getDiagonalCheck () {
 	i=1
-	if [[ ${cellValue[$i]} != " " && ${cellValue[$i]} == ${cellValue[(($i+4))]} && ${cellValue[$i]} == ${cellValue[(($i+8))]} ]]
-	then
-		echo 1
-	fi
-
-	i=3
-	if [[ ${cellValue[$i]} != " " && ${cellValue[$i]} == ${cellValue[(($i+2))]} && ${cellValue[$i]} == ${cellValue[(($i+4))]} ]]
+	if [[ ${cellValue[$i]} != " " && ${cellValue[$i]} == ${cellValue[(($i+4))]} && ${cellValue[$i]} == ${cellValue[(($i+8))]} ]] || [[ ${cellValue[(($i+2))]} != " " && ${cellValue[(($i+2))]} == ${cellValue[(($i+4))]} && ${cellValue[(($i+2))]} == ${cellValue[(($i+6))]} ]]
 	then
 		echo 1
 	fi
@@ -208,7 +202,7 @@ function getEmptyCenter () {
 		compInputStatus=1
 	fi
 }
-	compInputStatus=0
+
 function getEmptySides () {
 	if [ $compInputStatus -eq 0 ]
 	then
