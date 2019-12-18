@@ -24,27 +24,19 @@ function getBoardDisplayed() {
 	echo -e "     |     |     \n  ${cellValue[7]}  |  ${cellValue[8]}  |  ${cellValue[9]} \n     |     |     \n"
 }
 
-function getTossResult() {
-	case $user in 
-		X )
-			echo "You will play first";;
-		O )
-			echo "Computer will play first";;
-	esac
-}
-
-
 function getUserSymbol() {
 	userSymbol=$(( RANDOM % 2 ))
 	case $userSymbol in
 		1 )
 			comp=O
 			user=X
-			flag=0;;
+			flag=0
+			echo "You will play first";;
 		0 )
 			comp=X
 			user=O
-			flag=1;;
+			flag=1
+			echo "Computer will play first";;
 	esac
 	echo "You are assigned: " $user
 }
