@@ -24,13 +24,11 @@ function getBoardDisplayed() {
 function getUserSymbol() {
 	userSymbol=$(( RANDOM % 2 ))
 	case $userSymbol in
-		1 )
-			comp=O
+		1 )	comp=O
 			user=X
 			flag=0
 			echo "You will play first";;
-		0 )
-			comp=X
+		0 )	comp=X
 			user=O
 			flag=1
 			echo "Computer will play first";;
@@ -40,10 +38,8 @@ function getUserSymbol() {
 
 function isValidCell() {
 	case ${cellValue[$1]} in
-		" " )
-			cellValid=1;;
-		* )
-			cellValid=0;;
+		" " )	cellValid=1;;
+		* )	cellValid=0;;
 	esac
 	echo $cellValid
 }
@@ -162,7 +158,6 @@ function getEmptySides () {
 }
 
 function getWinner () {
-	cellNumber=$1
 	getWinCheck
 	if [[ $winStatus -eq 1 ]]
 	then
@@ -185,7 +180,6 @@ function main() {
 			then
 				echo "User's Turn "
 				cellValue[$cellNumber]=$user
-				counter=$(( $counter+1 ))
 				getBoardDisplayed
 				getWinner $cellNumber
 				flag=1
