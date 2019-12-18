@@ -72,53 +72,53 @@ function getWinCheck () {
 }
 
 function getWinRowChecked () {
-	winStatus=0
 	for (( i=1;i<10;i=$(( $i + 3 )) ))
 	do
-		if [[ ${cellValue[$i]} == ${cellValue[(($i+1))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+2))]} == " " ]]
+		if [ $winStatus == 0 ]
 		then
-			cellValue[(($i+2))]=$comp
-
-			cellNumber=$(( $i+2 ))
-			winStatus=1
-		elif [[ ${cellValue[$i]} == ${cellValue[(($i+2))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+1))]} == " " ]]
-		then
-			cellValue[(($i+1))]=$comp
-			cellNumber=$(( $i+1 ))
-			winStatus=1
-		elif [[ ${cellValue[(($i+1))]} == ${cellValue[(($i+2))]} && ${cellValue[(($i+1))]} != " " && ${cellValue[$i]} == " " ]]
-		then
-			cellValue[$i]=$comp
-			cellNumber=$i
-			winStatus=1
-		fi
-	done
-}
-
-function getWinColumnChecked () {
-	echo "$winStatus"
-	if [ $winStatus -eq 0 ]
-	then
-		for (( i=1;i<4;i++ ))
-		do
-			if [[ ${cellValue[$i]} == ${cellValue[(($i+3))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+6))]} == " " ]]
+			if [[ ${cellValue[$i]} == ${cellValue[(($i+1))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+2))]} == " " && ${cellValue[$i]} == $1 ]]
 			then
-				cellValue[(($i+6))]=$comp
-				cellNumber=$(( $i+6 ))
+				cellValue[(($i+2))]=$comp
+				cellNumber=$(( $i+2 ))
 				winStatus=1
-			elif [[ ${cellValue[$i]} == ${cellValue[(($i+6))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+3))]} == " " ]]
+			elif [[ ${cellValue[$i]} == ${cellValue[(($i+2))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+1))]} == " " && ${cellValue[$i]} == $1 ]]
 			then
-				cellValue[(($i+3))]=$comp
-				cellNumber=$(( $i+3 ))
+				cellValue[(($i+1))]=$comp
+				cellNumber=$(( $i+1 ))
 				winStatus=1
-			elif [[ ${cellValue[(($i+3))]} == ${cellValue[(($i+6))]} && ${cellValue[(($i+3))]} != " " && ${cellValue[$i]} == " " ]]
+			elif [[ ${cellValue[(($i+1))]} == ${cellValue[(($i+2))]} && ${cellValue[(($i+1))]} != " " && ${cellValue[$i]} == " " && ${cellValue[(($i+1))]} == $1 ]]
 			then
 				cellValue[$i]=$comp
 				cellNumber=$i
 				winStatus=1
 			fi
-		done
-	fi
+		fi
+	done
+}
+
+function getWinColumnChecked () {
+	for (( i=1;i<4;i++ ))
+	do
+		if [ $winStatus -eq 0 ]
+		then
+			if [[ ${cellValue[$i]} == ${cellValue[(($i+3))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+6))]} == " " && ${cellValue[$i]} == $1 ]]
+			then
+				cellValue[(($i+6))]=$comp
+				cellNumber=$(( $i+6 ))
+				winStatus=1
+			elif [[ ${cellValue[$i]} == ${cellValue[(($i+6))]} && ${cellValue[$i]} != " " && ${cellValue[(($i+3))]} == " " && ${cellValue[$i]} == $1 ]]
+			then
+				cellValue[(($i+3))]=$comp
+				cellNumber=$(( $i+3 ))
+				winStatus=1
+			elif [[ ${cellValue[(($i+3))]} == ${cellValue[(($i+6))]} && ${cellValue[(($i+3))]} != " " && ${cellValue[$i]} == " " && ${cellValue[(($i+3))]} == $1 ]]
+			then
+				cellValue[$i]=$comp
+				cellNumber=$i
+				winStatus=1
+			fi
+		fi
+	done
 }
 
 function getWinDiagonalChecked () {
@@ -255,8 +255,11 @@ function main() {
 		if [ $flag -eq 1 ]
 		then
 			echo "Computer's Turn "
-			getWinRowChecked
-			getWinColumnChecked
+			winStatus=0
+			getWinRowChecked $comp
+			getWinColumnChecked $comp
+			getWinRowChecked $user
+			getWinColumnChecked $user
 			getWinDiagonalChecked
 			getEmptyCorner
 			getEmptyCenter
