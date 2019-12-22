@@ -202,10 +202,7 @@ function main() {
 			flag=0
 		fi
 	done
-	if [ $j == 6 ]
-	then
-		echo "Match Tied"
-	fi
+	echo "Match Tied"
 }
 
 main
