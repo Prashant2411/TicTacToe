@@ -87,14 +87,13 @@ function getNextMoveWinStatus() {
 }
 
 function getNextMoveWinCheck() {
-        getNextMoveWinStatus 1 2 3 $1
-        getNextMoveWinStatus 4 5 6 $1
-        getNextMoveWinStatus 7 8 9 $1
-        getNextMoveWinStatus 1 4 7 $1
-        getNextMoveWinStatus 2 5 8 $1
-        getNextMoveWinStatus 3 6 9 $1
-        getNextMoveWinStatus 1 5 9 $1
-        getNextMoveWinStatus 3 5 7 $1
+	for (( i=1,l=1,k=1;i<4;i++,l=$(( $l + 3 )) ))
+	do
+		getNextMoveWinStatus $i $(($i+3)) $(($i+6)) $1
+		getNextMoveWinStatus $l $(($l+1)) $(($l+2)) $1
+        	getNextMoveWinStatus $k $(($k+4)) $(($k+8)) $1
+		getNextMoveWinStatus $(($k+2)) $(($k+4)) $(($k+6)) $1
+	done
 }
 
 function getEmptyCorner () {
