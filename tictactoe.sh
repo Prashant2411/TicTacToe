@@ -120,6 +120,7 @@ function getEmptyCorner () {
 			fi
 		done
 	fi
+	getEmptyCenter
 }
 
 function getEmptyCenter () {
@@ -129,6 +130,7 @@ function getEmptyCenter () {
 		cellValue[5]=$comp
 		compInputStatus=1
 	fi
+	getEmptySides
 }
 
 function getEmptySides () {
@@ -154,6 +156,7 @@ function getEmptySides () {
 			fi
 		done
 	fi
+	getBoardDisplayed
 }
 
 function getWinner () {
@@ -194,9 +197,6 @@ function main() {
 			getNextMoveWinCheck $comp
                         getNextMoveWinCheck $user
 			getEmptyCorner
-			getEmptyCenter
-			getEmptySides
-			getBoardDisplayed
 			getWinner $cellNumber
 			flag=0
 		fi
